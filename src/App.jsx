@@ -1,23 +1,65 @@
-import React from 'react';
-import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
-import Navbar from './Module 4/Hands-on Project - Build a Full-Stack Todo App/components/Navbar';
-import Home from './Module 4/Hands-on Project - Build a Full-Stack Todo App/pages/Home';
-import About from './Module 4/Hands-on Project - Build a Full-Stack Todo App/pages/About';
-import Contact from './Module 4/Hands-on Project - Build a Full-Stack Todo App/pages/Contact';
-import TodosPage from './Module 4/Hands-on Project - Build a Full-Stack Todo App/pages/TodosPage';
+import React, { useState } from 'react';
 
-function App() {
+function SimpleForm() {
+  const [formData, setFormData] = useState({
+    name: '',
+    email: ''
+  });
+
+  const [submittedData, setSubmittedData] = useState(null);
+
+  const handleChange = (e) => {
+    const { name, value } = e.target;
+    setFormData((prev) => ({
+      ...prev,
+      [name]: value
+    }));
+  };
+
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    setSubmittedData(formData);
+    setFormData({ name: '', email: '' });
+  };
+
   return (
-    <Router>
-      <Navbar />
-      <Routes>
-        <Route path="/" element={<Home />} />
-        <Route path="/todos" element={<TodosPage />} />
-        <Route path="/about" element={<About />} />
-        <Route path="/contact" element={<Contact />} />
-      </Routes>
-    </Router>
+    <div style={{ padding: '20px' }}>
+      <h2>Simple Controlled Form</h2>
+      <form onSubmit={handleSubmit}>
+        <div>
+          <label>Name: </label>
+          <input 
+            type="text" 
+            name="name" 
+            value={formData.name}
+            onChange={handleChange}
+            required 
+          />
+        </div>
+        <br />
+        <div>
+          <label>Email: </label>
+          <input 
+            type="email" 
+            name="email" 
+            value={formData.email}
+            onChange={handleChange}
+            required 
+          />
+        </div>
+        <br />
+        <button type="submit">Submit</button>
+      </form>
+
+      {submittedData && (
+        <div style={{ marginTop: '20px' }}>
+          <h4>Submitted Data:</h4>
+          <p><strong>Name:</strong> {submittedData.name}</p>
+          <p><strong>Email:</strong> {submittedData.email}</p>
+        </div>
+      )}
+    </div>
   );
 }
 
-export default App;
+export default SimpleForm;
